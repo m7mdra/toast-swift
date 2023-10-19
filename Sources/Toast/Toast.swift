@@ -38,10 +38,10 @@ public class Toast {
     public static func text(
         _ title: NSAttributedString,
         subtitle: NSAttributedString? = nil,
-        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
+        viewConfig: ToastViewConfiguration = ConstrainedToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
-        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle), config: viewConfig)
+        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle, viewConfig: viewConfig), viewConfig: viewConfig)
         return self.init(view: view, config: config)
     }
     
@@ -54,10 +54,11 @@ public class Toast {
     public static func text(
         _ title: String,
         subtitle: String? = nil,
-        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
+        viewConfig: ToastViewConfiguration = ConstrainedToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
-        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle), config: viewConfig)
+        print(#function)
+        let view = AppleToastView(child: TextToastView(title, subtitle: subtitle, viewConfig: viewConfig), viewConfig: viewConfig)
         return self.init(view: view, config: config)
     }
     
@@ -74,12 +75,12 @@ public class Toast {
         imageTint: UIColor? = defaultImageTint,
         title: NSAttributedString,
         subtitle: NSAttributedString? = nil,
-        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
+        viewConfig: ToastViewConfiguration = ConstrainedToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
         let view = AppleToastView(
-            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle),
-            config: viewConfig
+            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle,viewConfig: viewConfig),
+            viewConfig: viewConfig
         )
         return self.init(view: view, config: config)
     }
@@ -97,12 +98,12 @@ public class Toast {
         imageTint: UIColor? = defaultImageTint,
         title: String,
         subtitle: String? = nil,
-        viewConfig: ToastViewConfiguration = ToastViewConfiguration(),
+        viewConfig: ToastViewConfiguration = ConstrainedToastViewConfiguration(),
         config: ToastConfiguration = ToastConfiguration()
     ) -> Toast {
         let view = AppleToastView(
-            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle),
-            config: viewConfig
+            child: IconAppleToastView(image: image, imageTint: imageTint, title: title, subtitle: subtitle, viewConfig: viewConfig),
+            viewConfig: viewConfig
         )
         return self.init(view: view, config: config)
     }
@@ -125,6 +126,7 @@ public class Toast {
     ///   - config: Configuration options
     /// - Returns: A new Toast view with the configured layout
     public required init(view: ToastView, config: ToastConfiguration) {
+        print(#function)
         self.config = config
         self.view = view
         

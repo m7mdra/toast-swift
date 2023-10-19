@@ -17,9 +17,9 @@ public class AppleToastView : UIView, ToastView {
     
     public init(
         child: UIView,
-        config: ToastViewConfiguration = ToastViewConfiguration()
+        viewConfig: ToastViewConfiguration
     ) {
-        self.config = config
+        self.config = viewConfig
         self.child = child
         super.init(frame: .zero)
         
@@ -35,14 +35,24 @@ public class AppleToastView : UIView, ToastView {
         self.toast = toast
         guard let superview = superview else { return }
         translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            heightAnchor.constraint(greaterThanOrEqualToConstant: config.minHeight),
-            widthAnchor.constraint(greaterThanOrEqualToConstant: config.minWidth),
+        var constraints = [
             leadingAnchor.constraint(greaterThanOrEqualTo: superview.leadingAnchor, constant: 10),
             trailingAnchor.constraint(lessThanOrEqualTo: superview.trailingAnchor, constant: -10),
             centerXAnchor.constraint(equalTo: superview.centerXAnchor)
-        ])
+        ]
+        
+        if let minWidth = config.minWidth{
+            constraints.append(widthAnchor.constraint(greaterThanOrEqualToConstant: minWidth))
+
+        }
+        
+        if let minHeight = config.minHeight{
+            constraints.append(heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight))
+
+        }
+        
+        print(constraints.count)
+        NSLayoutConstraint.activate(constraints)
         
         switch toast.config.direction {
         case .bottom:
@@ -68,7 +78,7 @@ public class AppleToastView : UIView, ToastView {
         layoutIfNeeded()
         clipsToBounds = true
         layer.zPosition = 999
-        layer.cornerRadius = frame.height / 2
+        layer.cornerRadius = 16
         if #available(iOS 12.0, *) {
             backgroundColor = traitCollection.userInterfaceStyle == .light ? config.lightBackgroundColor : config.darkBackgroundColor
         } else {

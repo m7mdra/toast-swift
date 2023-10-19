@@ -11,7 +11,6 @@ import UIKit
 public class TextToastView : UIStackView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 1
         return label
     }()
     
@@ -19,20 +18,23 @@ public class TextToastView : UIStackView {
         UILabel()
     }()
     
-    public init(_ title: NSAttributedString, subtitle: NSAttributedString? = nil) {
+    public init(_ title: NSAttributedString, subtitle: NSAttributedString? = nil,viewConfig: ToastViewConfiguration ) {
         super.init(frame: CGRect.zero)
         commonInit()
         
         self.titleLabel.attributedText = title
+        self.titleLabel.numberOfLines = viewConfig.titleNumberOfLines
+
         addArrangedSubview(self.titleLabel)
         
         if let subtitle = subtitle {
             self.subtitleLabel.attributedText = subtitle
+            self.subtitleLabel.numberOfLines = viewConfig.subtitleNumberOfLines
             addArrangedSubview(subtitleLabel)
         }
     }
     
-    public init(_ title: String, subtitle: String? = nil) {
+    public init(_ title: String, subtitle: String? = nil, viewConfig: ToastViewConfiguration) {
         super.init(frame: CGRect.zero)
         commonInit()
         
@@ -44,6 +46,7 @@ public class TextToastView : UIStackView {
             self.subtitleLabel.textColor = .systemGray
             self.subtitleLabel.text = subtitle
             self.subtitleLabel.font = .systemFont(ofSize: 12, weight: .bold)
+            self.subtitleLabel.numberOfLines = viewConfig.subtitleNumberOfLines
             addArrangedSubview(self.subtitleLabel)
         }
     }
